@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        input, select, button {
+            display: block;
+            margin-bottom: 10px;
+            padding: 8px;
+            width: 200px;
+        }
+        label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Money Tracker</h1>
+    <form id="moneyForm">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required>
+
+        <label for="type">Type:</label>
+        <select id="type" name="type" required>
+            <option value="Income">Income</option>
+            <option value="Expense">Expense</option>
+        </select>
+
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" placeholder="E.g., Salary, Rent" required>
+
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="amount" placeholder="Enter amount" required>
+
+        <label for="account">Account:</label>
+        <input type="text" id="account" name="account" placeholder="E.g., Bank Account" required>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <p id="responseMessage"></p>
+
+    <script>
+        const form = document.getElementById('moneyForm');
+        const responseMessage = document.getElementById('responseMessage');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Prepare the data
+            const formData = new FormData(form);
+            const data = new URLSearchParams(formData);
+
+            // Submit the data to the Google Apps Script Web App
+            fetch('AKfycbx8ZTNPR678k-PYcyrqiB_zhd5xgQuz1mVlA6ogPWs', {  // Replace with your Web App URL
+                method: 'POST',
+                body: data
+            })
+            .then(response => response.text())
+            .then(result => {
+                responseMessage.textContent = "Data saved successfully!";
+                form.reset();  // Reset the form after submission
+            })
+            .catch(error => {
+                responseMessage.textContent = "Error saving data!";
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
